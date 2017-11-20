@@ -16,11 +16,6 @@ import java.util.EnumSet;
 public class WebMain {
 
 
-    public static final EnumSet<DispatcherType> DISPATCHER_TYPES = EnumSet.of(DispatcherType.REQUEST,
-            DispatcherType.FORWARD,
-            DispatcherType.INCLUDE,
-            DispatcherType.ERROR);
-
     public static void main(String[] args) throws Exception {
 
         final org.glassfish.grizzly.http.server.HttpServer server = createServer();
@@ -46,15 +41,19 @@ public class WebMain {
     private static WebappContext createWebappContext() {
         WebappContext context = new WebappContext("Context"/*, Configuration.PATH*/);
 
+        final EnumSet<DispatcherType> dispatcherTypes = EnumSet.of(DispatcherType.REQUEST,
+                DispatcherType.FORWARD,
+                DispatcherType.INCLUDE,
+                DispatcherType.ERROR);
 
         context.addFilter(EncodingFilter.class.getName(), EncodingFilter.class)
-               .addMappingForUrlPatterns(DISPATCHER_TYPES, "/*");
+               .addMappingForUrlPatterns(dispatcherTypes, "/*");
 
         context.addFilter("MDCFilter", MDCInsertingServletFilter.class)
-               .addMappingForUrlPatterns(DISPATCHER_TYPES, "/*");
+               .addMappingForUrlPatterns(dispatcherTypes, "/*");
 
         context.addFilter("MDCUserAndInstanceFilter", MDCUserAndInstanceFilter.class)
-               .addMappingForUrlPatterns(DISPATCHER_TYPES, "/*");
+               .addMappingForUrlPatterns(dispatcherTypes, "/*");
 
 
 

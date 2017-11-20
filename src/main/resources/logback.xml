@@ -7,6 +7,7 @@
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%d{HH:mm:ss.SSS} [%thread] %highlight(%-5level) [%file:%line] [user: %mdc{username}] - %msg %n</pattern>
+            <!--<pattern>%d{HH:mm:ss.SSS} [%thread] %highlight(%-5level) [%file:%line] [user: %mdc{username}] [agent: %mdc{req.userAgent}] - %msg %n</pattern>-->
         </encoder>
     </appender>
 
@@ -25,24 +26,11 @@
         </encoder>
     </appender>
 
-    <appender name="GELF" class="biz.paluch.logging.gelf.logback.GelfLogbackAppender">
-        <host>udp:192.168.4.39</host>
-        <port>12201</port>
-        <version>1.1</version>
-        <facility>kittengarten</facility>
-        <extractStackTrace>true</extractStackTrace>
-        <filterStackTrace>true</filterStackTrace>
-        <mdcProfiling>true</mdcProfiling>
-        <timestampPattern>yyyy-MM-dd HH:mm:ss,SSSS</timestampPattern>
-        <maximumMessageSize>8192</maximumMessageSize>
-        <includeFullMdc>true</includeFullMdc>
-    </appender>
 
     <logger name="org.przybyl.logs" level="${LOG_LEVEL:-debug}" />
 
     <root level="${LOG_LEVEL:-info}">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE"/>
-        <appender-ref ref="GELF"/>
     </root>
 </configuration>
